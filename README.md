@@ -6,6 +6,66 @@ A robot-themed beginner programming tutorial for ages 10–11, built with plain 
 
 Double-click **index.html** to open it in a current version of Chrome, Edge, Firefox, or Safari. No installation, internet connection, account, or server is needed.
 
+## Your first adventure: a guide for young coders
+
+Hello, coder! Meet **Byte**, your robot teammate. You write instructions in JavaScript, and Byte follows them. You do not need to know any code before you start.
+
+### Get ready
+
+1. On this GitHub page, click the green **Code** button, then **Download ZIP**. If you already have the project folder, skip to step 3.
+2. Find the ZIP in your Downloads folder and extract it. On Windows, right-click it and choose **Extract All**. On a Mac, double-click it. Ask a grown-up if you need help finding the folder.
+3. Open the extracted folder and double-click **index.html**. Keep it beside `app.js` and `styles.css` so the lessons and colours load together.
+4. Start with **Hello, robot!**. A computer with a keyboard makes editing easier.
+
+### Try your first line of code
+
+Read the lesson, then type this into the code editor:
+
+```js
+say("Hello, Byte!");
+```
+
+Click **Run code** and look in **OUTPUT** for your message. Now change only the words inside the quotation marks and run it again. What does Byte say this time?
+
+`say` tells Byte to show a message. The quotation marks surround your words, the parentheses hold the message, and the semicolon finishes the instruction. Keep those marks when you change the message.
+
+### Earn a mission badge
+
+1. Read the **LEARNING GOALS** and **YOUR MISSION** before changing the code.
+2. Predict what Byte will do. Change one thing, click **Run code**, and watch what happens.
+3. Follow the mission instructions until **Code: achieved** appears. A program can run without finishing the mission yet.
+4. Answer the **QUICK KNOWLEDGE CHECK**. You can try again if your first answer is wrong.
+5. When both **Code** and **Quiz** are achieved, you earn a badge. Click **Next mission** to continue.
+
+Work through missions 1–14 first, then try the four **Next-level skills** missions. The early lessons give you starter code to explore; later challenges ask you to fix or finish it. Try one mission at a time and take breaks when you need them.
+
+### If you get stuck
+
+- Click **Need a hint?** and compare your code with the lesson example.
+- Read the message in **OUTPUT**. Check spelling, matching quotation marks, parentheses `()`, and curly braces `{}`.
+- Make one small change and run again. Finding and fixing a mistake is called **debugging**—it is part of coding!
+- Click **Reset code** to get the mission's starter code back. It replaces your edits for that mission, but keeps your earned badges.
+- Ask a friend, teacher, or grown-up to read the instructions with you. Explain what you expected Byte to do and what actually happened.
+
+### Try a robot experiment
+
+When you reach the movement lesson, try these instructions and predict Byte's path:
+
+```js
+move(1);
+turn("right");
+move(1);
+say("I explored two squares!");
+```
+
+Each run starts Byte in the centre, facing up. `move(1)` moves one square in the direction Byte faces; `turn("right")` changes that direction without moving. Try changing `"right"` to `"left"`. This experiment is for exploring; follow each mission's own instructions to earn its badge.
+
+### Keep your discoveries
+
+Your badges are saved in the same browser on the same device when saving is available. Private browsing or clearing browser data may erase them. Your code edits last only while the page stays open, so copy a favourite program into a text file before closing or refreshing the page. **Reset my progress** clears your achievements and code drafts after you confirm.
+
+Write your own code or use the examples in these lessons. If someone gives you an unfamiliar script, ask a trusted grown-up before running it.
+
 ## What’s included
 
 - Eighteen missions: the original fourteen cover instructions, sequences, variables, loops, conditions, a square robot challenge, number maths, joining strings, counters, functions, arrays, debugging, treasure, and a dance finale. Four **Next-level skills** extensions introduce booleans with `===`, one-parameter functions with two calls, `&&` using battery and map checks, and `for...of` list iteration.
