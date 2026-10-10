@@ -22,11 +22,112 @@ lessons.forEach((lesson, i) => {
   test(`Mission ${i + 1}: starter code runs and has the expected completion state`, () => {
     const result = run(lesson.code);
     assert.equal(result.ok, true, result.error);
-    const practiceMission = ['Debugging', 'Treasure challenge', 'Dance challenge'].includes(lesson.short);
-    assert.equal(lesson.check(result.commands, lesson.code), !practiceMission);
-    assert.ok(lesson.goals.length >= 2);
+    assert.equal(typeof lesson.starterPasses, 'boolean');
+    assert.equal(lesson.check(result.commands, lesson.code), lesson.starterPasses);
+    assert.equal(lesson.goals.length, 2);
     assert.ok(lesson.correct >= 0 && lesson.correct < lesson.answers.length);
   });
+});
+
+test('Lesson IDs are unique and the original fourteen positions remain stable', () => {
+  assert.deepEqual(Array.from(lessons.slice(0, 14), lesson => lesson.id), [
+    'hello-robot', 'instructions', 'variables', 'repeat-loops', 'conditions', 'square-challenge',
+    'robot-maths', 'joining-strings', 'counters', 'named-functions', 'arrays', 'debugging',
+    'treasure-challenge', 'dance-challenge'
+  ]);
+  assert.equal(lessons.length, 18);
+  assert.equal(new Set(lessons.map(lesson => lesson.id)).size, 18);
+  lessons.forEach(lesson => assert.match(lesson.id, /^[a-z][a-z-]+$/));
+  lessons.slice(14).forEach(lesson => {
+    assert.equal(lesson.category, 'NEXT-LEVEL SKILLS');
+    for (const key of ['prerequisite', 'example', 'hint', 'question', 'mission']) assert.ok(lesson[key]);
+  });
+});
+
+const extensionSolutions = [
+  'let hasMap = true; if (hasMap === true) { say("Map ready!"); } else { say("Pack a map!"); }',
+  'function greet(name) { say("Hello, " + name + "!"); } greet("Byte"); greet("Ada");',
+  'let battery = 75; let hasMap = false; if (battery > 20 && hasMap === true) { say("Ready to explore!"); } else { say("Check your supplies!"); }',
+  'let supplies = ["map", "snack", "torch"]; for (let item of supplies) { say(item); }'
+];
+
+test('Every extension accepts a completed solution', () => {
+  extensionSolutions.forEach((code, index) => {
+    const result = run(code);
+    assert.equal(result.ok, true, result.error);
+    assert.equal(lessons[index + 14].check(result.commands, code), true);
+  });
+});
+
+test('Extensions reject correct output without the taught skill', () => {
+  const shortcuts = [
+    'say("Map ready!");',
+    'say("Hello, Byte!"); say("Hello, Ada!");',
+    'say("Check your supplies!");',
+    'say("map"); say("snack"); say("torch");'
+  ];
+  shortcuts.forEach((code, index) => assert.equal(lessons[index + 14].check(run(code).commands, code), false));
+  const weakerChecks = [extensionSolutions[0].replace('===', '=='), extensionSolutions[2].replace('&&', '||')];
+  weakerChecks.forEach((code, index) => assert.equal(lessons[index ? 16 : 14].check(run(code).commands, code), false));
+});
+
+test('Extensions reject wrong values, order, and counts', () => {
+  const negatives = [
+    extensionSolutions[0].replace('= true;', '= false;'),
+    extensionSolutions[1].replace('greet("Byte"); greet("Ada");', 'greet("Ada"); greet("Byte");'),
+    extensionSolutions[1].replace('greet("Ada");', ''),
+    extensionSolutions[2].replace('= false;', '= true;'),
+    extensionSolutions[3].replace('["map", "snack", "torch"]', '["torch", "snack", "map"]'),
+    extensionSolutions[3].replace('say(item);', 'say("item");')
+  ];
+  negatives.forEach((code, index) => {
+    const lesson = lessons[[14, 15, 15, 16, 17, 17][index]];
+    assert.equal(lesson.check(run(code).commands, code), false);
+  });
+});
+
+test('Required syntax in comments or strings cannot earn a skill', () => {
+  const body = 'say("Map ready!");';
+  for (const decoration of [
+    '// ' + extensionSolutions[0],
+    '/* ' + extensionSolutions[0] + ' */',
+    'let decoy = ' + JSON.stringify(extensionSolutions[0]) + ';',
+    'let decoy = `' + extensionSolutions[0] + '`;',
+    "let decoy = 'let hasMap = true; if (hasMap === true) {} else {}';"
+  ]) {
+    const code = body + '\n' + decoration;
+    assert.equal(run(code).ok, true);
+    assert.equal(lessons[14].check(run(code).commands, code), false);
+  }
+  const mathsDecoy = 'let answer = 12; let decoration = "*"; say(answer);';
+  assert.equal(lessons[6].check(run(mathsDecoy).commands, mathsDecoy), false);
+});
+
+test('Quoted comment markers do not hide real syntax after strings', () => {
+  const code = 'let url = "https://byte.example/*map*/";\n' + extensionSolutions[0];
+  assert.equal(lessons[14].check(run(code).commands, code), true);
+  const withComments = extensionSolutions[0].replace('===', '/* compare */ ===');
+  assert.equal(lessons[14].check(run(withComments).commands, withComments), true);
+});
+
+test('Square and dance reject fake squares, wrong facing, blocked moves, or celebration before arrival', () => {
+  const square = lessons[5];
+  for (const code of [
+    'let message = "Mission complete!"; repeat(4, () => { turn("right"); }); repeat(4, () => { move(1); }); say(message);',
+    square.code.replace('move(1);', 'move(2);'),
+    square.code.replace('say(message);', 'turn("right"); say(message);'),
+    'let message = "Mission complete!"; say(message); repeat(4, () => { move(1); turn("right"); });'
+  ]) assert.equal(square.check(run(code).commands, code), false);
+  const dance = lessons[13];
+  const fakeDance = 'let score = 4; function danceStep() {} repeat(4, () => { turn("right"); }); repeat(4, () => { move(1); }); say("Dance score: " + score);';
+  assert.equal(dance.check(run(fakeDance).commands, fakeDance), false);
+  const debug = lessons[11];
+  const wrongOrder = 'move(1); turn("right"); move(2); turn("right"); move(1); turn("left");';
+  assert.equal(run(wrongOrder).commands.at(-1).x, 4);
+  assert.equal(debug.check(run(wrongOrder).commands, wrongOrder), false);
+  const treasure = lessons[12];
+  const reverseRoute = 'turn("right"); move(2); turn("left"); move(2); say("Treasure found!");';
+  assert.equal(treasure.check(run(reverseRoute).commands, reverseRoute), false);
 });
 test('New practice missions accept completed solutions', () => {
   const solutions = {

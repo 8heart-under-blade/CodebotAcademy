@@ -2,6 +2,7 @@
 
 const lessons = [
   {
+    id: "hello-robot", starterPasses: true,
     goals: ['Describe a program as instructions.', 'Display a message with say().'],
     title: 'Hello, robot!', short: 'Hello, robot!', icon: '⌘', category: 'THE BASICS', minutes: 5,
     intro: 'Meet Byte, your coding buddy! A program is a set of instructions that tells a computer what to do.',
@@ -15,6 +16,7 @@ const lessons = [
     check: (commands) => commands.some(c => c.type === 'say' && c.text.trim())
   },
   {
+    id: "instructions", starterPasses: true,
     goals: ['Follow instructions in sequence.', 'Move and turn Byte on the grid.'],
     title: 'One step at a time', short: 'Giving instructions', icon: '↗', category: 'SEQUENCES', minutes: 6,
     intro: 'Computers follow instructions in order, from top to bottom. That order is called a sequence.',
@@ -28,6 +30,7 @@ const lessons = [
     check: (commands) => commands.length >= 3 && commands[0].type === 'move' && commands[1].type === 'turn' && commands[1].direction === 'right' && commands.slice(2).some(c => c.type === 'say')
   },
   {
+    id: "variables", starterPasses: true,
     goals: ['Store a message in a variable.', 'Use a variable by its name.'],
     title: 'A box for your ideas', short: 'Variables', icon: '{ }', category: 'VARIABLES', minutes: 7,
     intro: 'Imagine a labelled box that holds something. In code, that box is called a variable.',
@@ -41,6 +44,7 @@ const lessons = [
     check: (commands, code) => /\blet\s+greeting\s*=/.test(code) && /\bsay\s*\(\s*greeting\s*\)/.test(code) && commands.some(c => c.type === 'say' && c.text.trim())
   },
   {
+    id: "repeat-loops", starterPasses: true,
     goals: ['Repeat instructions with a loop.', 'Change how many times a loop runs.'],
     title: 'Do it. Then do it again.', short: 'Loops', icon: '↻', category: 'LOOPS', minutes: 8,
     intro: 'Want to do the same thing again and again? A loop saves you from writing the same instructions lots of times.',
@@ -54,6 +58,7 @@ const lessons = [
     check: (commands, code) => /\brepeat\s*\(/.test(code) && commands.filter(c => c.type === 'say' && /beep/i.test(c.text)).length >= 3
   },
   {
+    id: "conditions", starterPasses: true,
     goals: ['Compare numbers in a condition.', 'Choose between if and else branches.'],
     title: 'Help Byte make a choice', short: 'Making decisions', icon: '⑂', category: 'CONDITIONS', minutes: 8,
     intro: 'You make choices every day. Code can make choices too, using a condition that is either true or false.',
@@ -67,6 +72,7 @@ const lessons = [
     check: (commands, code) => /\bif\s*\(/.test(code) && /\belse\b/.test(code) && commands.some(c => c.type === 'say')
   },
   {
+    id: "square-challenge", starterPasses: true,
     goals: ['Combine movement and loops.', 'Return to the start and share a victory message.'],
     title: 'Your first robot mission', short: 'Robot challenge', icon: '★', category: 'THE BIG CHALLENGE', minutes: 10, challenge: true,
     intro: 'Time to put your new skills together! Give Byte a square-shaped adventure and a victory message.',
@@ -77,9 +83,10 @@ const lessons = [
     hint: 'Use repeat(4, () => { ... }); with move(1); and turn("right"); inside. Your say(message); goes after the loop.',
     question: 'Which skills did you use in this mission?', answers: ['Only turning', 'Only messages', 'Sequences, variables & loops'], correct: 2,
     feedback: 'Amazing! You combined three coding skills to create your own robot adventure.',
-    check: (commands, code) => /\brepeat\s*\(/.test(code) && /\blet\s+/.test(code) && commands.filter(c => c.type === 'move').length >= 4 && commands.filter(c => c.type === 'turn').length >= 4 && commands.some(c => c.type === 'say' && /mission complete/i.test(c.text)) && commands.at(-1).x === 2 && commands.at(-1).y === 2
+    check: (commands, code) => /\brepeat\s*\(/.test(code) && /\blet\s+message\s*=/.test(code) && /\bsay\s*\(\s*message\s*\)/.test(code) && squareTrace(commands) && /mission complete/i.test(commands.at(-1).text)
   },
   {
+    id: "robot-maths", starterPasses: true,
     title: 'Robot maths', short: 'Number power', icon: '+', category: 'NUMBERS', minutes: 6,
     goals: ['Add numbers stored in variables.', 'Show a calculated answer with say().'],
     intro: 'Byte can be your calculator! Numbers do not need quotation marks.',
@@ -90,9 +97,10 @@ const lessons = [
     hint: 'Multiply packs by cellsPerPack using *. Then use say(total); without quotes.',
     question: 'What does 3 * 4 calculate?', answers: ['3 plus 4', '3 times 4', 'The message 34'], correct: 1,
     feedback: 'Right! The * symbol means multiplication.',
-    check: (commands, code) => /\blet\s+/.test(code) && /\*/.test(code.replace(/\/\/[^\n]*/g, '')) && commands.some(c => c.type === 'say' && c.text === '12')
+    check: (commands, code) => /\blet\s+/.test(code) && /\*/.test(code) && commands.some(c => c.type === 'say' && c.text === '12')
   },
   {
+    id: "joining-strings", starterPasses: true,
     title: 'Build a personalised greeting', short: 'Joining messages', icon: 'Aa', category: 'STRINGS', minutes: 6,
     goals: ['Join text with the + operator.', 'Use a variable inside a message.'],
     intro: 'Text in code is called a string. Join strings to build your own messages!',
@@ -106,6 +114,7 @@ const lessons = [
     check: (commands, code) => /\blet\s+name\s*=/.test(code) && /\bsay\s*\([^;]*\+\s*name\b/.test(code) && commands.some(c => c.type === 'say' && c.text === 'Hello, Byte!')
   },
   {
+    id: "counters", starterPasses: true,
     title: 'Count every beep', short: 'Updating variables', icon: '↑', category: 'COUNTERS', minutes: 7,
     goals: ['Change a variable after creating it.', 'Count repeated actions with a loop.'],
     intro: 'A variable can change while your program runs. Let’s count Byte’s beeps!',
@@ -119,6 +128,7 @@ const lessons = [
     check: (commands, code) => /\brepeat\s*\(/.test(code) && /\blet\s+count\s*=/.test(code) && commands.filter(c => c.type === 'say').map(c => c.text).join(',') === '1,2,3,4'
   },
   {
+    id: "named-functions", starterPasses: true,
     title: 'Teach Byte a new trick', short: 'Functions', icon: 'ƒ', category: 'FUNCTIONS', minutes: 8,
     goals: ['Define a named function.', 'Call the same function more than once.'],
     intro: 'A function is a named set of instructions you can reuse whenever you need it.',
@@ -132,6 +142,7 @@ const lessons = [
     check: (commands, code) => /\bfunction\s+cheer\s*\(/.test(code) && commands.filter(c => c.type === 'say' && c.text === 'Hooray!').length === 2
   },
   {
+    id: "arrays", starterPasses: true,
     title: 'Pack Byte’s backpack', short: 'Lists & arrays', icon: '[ ]', category: 'ARRAYS', minutes: 8,
     goals: ['Store several values in an array.', 'Read an item using its index.'],
     intro: 'An array is a list of values. Byte can keep all the adventure supplies in one variable.',
@@ -145,6 +156,7 @@ const lessons = [
     check: (commands, code) => /\blet\s+supplies\s*=\s*\[/.test(code) && /\bsupplies\s*\[\s*0\s*\]/.test(code) && /\bsupplies\s*\[\s*2\s*\]/.test(code) && commands.filter(c => c.type === 'say').map(c => c.text).join(',') === 'map,torch'
   },
   {
+    id: "debugging", starterPasses: false,
     title: 'Find the sneaky bug', short: 'Debugging', icon: '?', category: 'DEBUGGING', minutes: 7,
     goals: ['Compare actual output with the goal.', 'Fix a mistake in the order of instructions.'],
     intro: 'A bug is a mistake in a program. Debugging means finding it and fixing it—not giving up!',
@@ -155,9 +167,10 @@ const lessons = [
     hint: 'Your first instruction should be turn("right"); and your second should be move(2);.',
     question: 'Can a program run without errors but still do the wrong thing?', answers: ['Yes, it can have a logic bug', 'No, running means perfect', 'Only if the screen is off'], correct: 0,
     feedback: 'Exactly! Checking the result helps you find logic bugs.',
-    check: commands => commands.length > 0 && !commands.some(c => c.blocked) && commands.at(-1).x === 4 && commands.at(-1).y === 2 && commands.at(-1).facing === 1
+    check: commands => commands.length === 3 && commands[0].type === 'turn' && commands[0].direction === 'right' && commands.slice(1).every(c => c.type === 'move') && !commands.some(c => c.blocked) && commands.at(-1).x === 4 && commands.at(-1).y === 2 && commands.at(-1).facing === 1
   },
   {
+    id: "treasure-challenge", starterPasses: false,
     title: 'Treasure in the corner', short: 'Treasure challenge', icon: '◆', category: 'NAVIGATION CHALLENGE', minutes: 9, challenge: true,
     goals: ['Plan a route on the grid.', 'Reach a target without blocked moves.'],
     intro: 'There’s treasure in the top-right corner! Plan a route from the centre to collect it.',
@@ -168,12 +181,13 @@ const lessons = [
     hint: 'Try move(2); turn("right"); move(2); before the final say().',
     question: 'Why should you plan a route before coding?', answers: ['To avoid all turns', 'To choose the right sequence', 'To make the grid larger'], correct: 1,
     feedback: 'Right! Planning helps you choose the order and number of moves.',
-    check: commands => commands.length > 0 && !commands.some(c => c.blocked) && commands.at(-1).type === 'say' && commands.at(-1).text === 'Treasure found!' && commands.at(-1).x === 4 && commands.at(-1).y === 0
+    check: commands => commands.length === 6 && commands.slice(0, 2).every(c => c.type === 'move' && c.facing === 0) && commands[2].type === 'turn' && commands[2].direction === 'right' && commands.slice(3, 5).every(c => c.type === 'move' && c.facing === 1) && !commands.some(c => c.blocked) && commands.at(-1).facing === 1 && commands.at(-1).type === 'say' && commands.at(-1).text === 'Treasure found!' && commands.at(-1).x === 4 && commands.at(-1).y === 0
   },
   {
+    id: "dance-challenge", starterPasses: false,
     title: 'The robot dance finale', short: 'Dance challenge', icon: '✦', category: 'FINAL CHALLENGE', minutes: 10, challenge: true,
     goals: ['Combine functions, loops, and a counter.', 'Return Byte to the centre facing up.'],
-    intro: 'Your final mission combines reusable tricks, repetition, and a score. Let’s make Byte dance!',
+    intro: 'Your core-course finale combines reusable tricks, repetition, and a score. Let’s make Byte dance!',
     explanation: 'Define <code>danceStep()</code> to move one square and turn right. Repeat that trick four times, counting each step. Finish with <code>say("Dance score: " + score);</code>.',
     example: 'function danceStep() {\n  move(1);\n  turn("right");\n}',
     mission: 'Use danceStep() inside repeat(4, ...). Count the steps in score. Finish back in the centre facing up and say “Dance score: 4”. Avoid blocked moves.',
@@ -181,9 +195,94 @@ const lessons = [
     hint: 'Inside danceStep use move(1); and turn("right");. Inside repeat add score = score + 1; after danceStep();.',
     question: 'What makes a function useful in a larger program?', answers: ['It hides all mistakes', 'It replaces every variable', 'It groups reusable instructions'], correct: 2,
     feedback: 'Amazing! Reusable functions help organise bigger ideas into small steps.',
-    check: (commands, code) => /\bfunction\s+danceStep\s*\(/.test(code) && /\brepeat\s*\(/.test(code) && /\blet\s+score\s*=/.test(code) && commands.filter(c => c.type === 'move').length === 4 && commands.filter(c => c.type === 'turn').length === 4 && !commands.some(c => c.blocked) && commands.at(-1).type === 'say' && commands.at(-1).text === 'Dance score: 4' && commands.at(-1).x === 2 && commands.at(-1).y === 2 && commands.at(-1).facing === 0
+    check: (commands, code) => /\bfunction\s+danceStep\s*\(/.test(code) && /\brepeat\s*\(/.test(code) && /\blet\s+score\s*=/.test(code) && squareTrace(commands) && !commands.some(c => c.blocked) && commands.at(-1).type === 'say' && commands.at(-1).text === 'Dance score: 4' && commands.at(-1).x === 2 && commands.at(-1).y === 2 && commands.at(-1).facing === 0
+  },
+  {
+    id: 'boolean-map', starterPasses: false,
+    title: 'A true-or-false map check', short: 'Booleans', icon: '=?', category: 'NEXT-LEVEL SKILLS', minutes: 8,
+    goals: ['Store true or false in a boolean variable.', 'Compare a boolean with === in an if statement.'],
+    prerequisite: 'Remember variables and if/else from missions 3 and 5. A condition chooses which block runs.',
+    intro: 'Does Byte have a map? A boolean stores one of two values: true or false, without quotes.',
+    explanation: '<code>=</code> stores a value. <code>===</code> compares values. <code>hasMap === true</code> asks whether hasMap is true. The text <code>"true"</code> is a string, not a boolean!',
+    example: 'let hasTorch = true;\nif (hasTorch === true) {\n  say("Torch ready!");\n} else {\n  say("Pack a torch!");\n}',
+    mission: 'Set hasMap to true. Use hasMap === true as your condition so Byte says only “Map ready!”. Try false afterward to see the other branch.',
+    code: 'let hasMap = false;\n\nif (hasMap) {\n  say("Map ready!");\n} else {\n  say("Pack a map!");\n}',
+    hint: 'Change false to true on the first line. Change the condition inside if to hasMap === true.',
+    question: 'Which value is a boolean?', answers: ['"true" with quotes', 'true without quotes', '"map"'], correct: 1,
+    feedback: 'Yes! true and false without quotes are boolean values.',
+    check: (commands, code) => /\blet\s+hasMap\s*=\s*true\b/.test(code) && /\bif\s*\(\s*hasMap\s*===\s*true\s*\)/.test(code) && /\belse\b/.test(code) && saysExactly(commands, ['Map ready!'])
+  },
+  {
+    id: 'function-parameters', starterPasses: false,
+    title: 'Give a function a message', short: 'Function inputs', icon: '(x)', category: 'NEXT-LEVEL SKILLS', minutes: 8,
+    goals: ['Define a function with one parameter.', 'Call it twice with different arguments.'],
+    prerequisite: 'Remember named functions from mission 10: defining a function saves instructions; calling it runs them.',
+    intro: 'A parameter is a named input for a function. Give the same trick a different message each time!',
+    explanation: 'In <code>function announce(message)</code>, message is the parameter. In <code>announce("Hello!")</code>, the supplied value is the argument. Inside the function, use the parameter without quotes.',
+    example: 'function announce(message) {\n  say(message);\n}\nannounce("Hello!");\nannounce("Goodbye!");',
+    mission: 'Complete greet(name) so it says “Hello, ” joined to name plus “!”. Call greet twice: first with Byte, then with Ada. Get “Hello, Byte!” followed by “Hello, Ada!”.',
+    code: 'function greet(name) {\n  // Join the greeting with name here.\n}\n\ngreet("Byte");\n// Add a second call for Ada.',
+    hint: 'Inside greet use say("Hello, " + name + "!");. After greet("Byte"); add greet("Ada");.',
+    question: 'In greet("Ada"), what is "Ada"?', answers: ['The function name', 'The argument given to the function', 'A loop count'], correct: 1,
+    feedback: 'Correct! The argument supplies a value for the name parameter.',
+    check: (commands, code) => /\bfunction\s+greet\s*\(\s*name\s*\)/.test(code) && /\bsay\s*\([^;{}]*\+\s*name\s*\+/.test(code) && (code.match(/\bgreet\s*\(/g) || []).length === 3 && saysExactly(commands, ['Hello, Byte!', 'Hello, Ada!'])
+  },
+  {
+    id: 'and-expedition', starterPasses: false,
+    title: 'Two checks before an adventure', short: 'Both conditions', icon: '&&', category: 'NEXT-LEVEL SKILLS', minutes: 8,
+    goals: ['Join two conditions with &&.', 'Explain why both conditions must be true.'],
+    prerequisite: 'Remember battery comparisons from mission 5 and booleans from mission 15.',
+    intro: 'Byte needs enough battery AND a map before exploring. One ready item is not enough!',
+    explanation: '<code>&amp;&amp;</code> means AND. <code>battery > 20 &amp;&amp; hasMap === true</code> is true only when the battery is greater than 20 and Byte has a map.',
+    example: 'let battery = 50;\nlet hasMap = true;\nif (battery > 20 && hasMap === true) {\n  say("Ready to explore!");\n} else {\n  say("Check your supplies!");\n}',
+    mission: 'Keep battery at 75 and hasMap at false. Complete the condition with && and the map check so Byte says only “Check your supplies!”. Then try true to explore.',
+    code: 'let battery = 75;\nlet hasMap = false;\n\nif (battery > 20) {\n  say("Ready to explore!");\n} else {\n  say("Check your supplies!");\n}',
+    hint: 'Use if (battery > 20 && hasMap === true). A charged battery alone is not enough when hasMap is false.',
+    question: 'Battery is 75 but hasMap is false. Is battery > 20 && hasMap === true true?', answers: ['Yes, battery is enough', 'No, both checks must be true', 'Yes, false means ready'], correct: 1,
+    feedback: 'Right! AND needs both conditions to be true. Byte still needs a map.',
+    check: (commands, code) => /\blet\s+battery\s*=\s*75\b/.test(code) && /\blet\s+hasMap\s*=\s*false\b/.test(code) && /\bif\s*\(\s*battery\s*>\s*20\s*&&\s*hasMap\s*===\s*true\s*\)/.test(code) && /\belse\b/.test(code) && saysExactly(commands, ['Check your supplies!'])
+  },
+  {
+    id: 'for-of-supplies', starterPasses: false,
+    title: 'Unpack every item', short: 'Loop through a list', icon: '[↻]', category: 'NEXT-LEVEL SKILLS', minutes: 8,
+    goals: ['Visit each array item with for...of.', 'Use the loop variable to display items in order.'],
+    prerequisite: 'Remember arrays from mission 11 and loops from mission 4. Arrays keep items in an order.',
+    intro: 'A for...of loop visits each value in a list, from first to last. No index counting needed!',
+    explanation: 'In <code>for (let item of supplies)</code>, item holds the next value each time. Use <code>say(item)</code> inside the braces to show that value.',
+    example: 'let tools = ["rope", "torch"];\nfor (let tool of tools) {\n  say(tool);\n}',
+    mission: 'Keep the supplies list in order. Complete the for...of body so Byte says “map”, “snack”, then “torch”, once each.',
+    code: 'let supplies = ["map", "snack", "torch"];\n\nfor (let item of supplies) {\n  // Display the current item here.\n}',
+    hint: 'Put say(item); inside the loop. Quoting "item" would show the word item instead of the supply!',
+    question: 'What does item hold on the second trip through this loop?', answers: ['map', 'snack', 'torch'], correct: 1,
+    feedback: 'Yes! The loop visits map first, snack second, and torch third.',
+    check: (commands, code) => /\blet\s+supplies\s*=\s*\[/.test(code) && /\bfor\s*\(\s*let\s+item\s+of\s+supplies\s*\)\s*\{\s*say\s*\(\s*item\s*\)\s*;?\s*\}/.test(code) && saysExactly(commands, ['map', 'snack', 'torch'])
   }
 ];
+
+function saysExactly(commands, texts) {
+  return commands.length === texts.length && commands.every((command, index) => command.type === 'say' && command.text === texts[index]);
+}
+
+// Lightweight syntax evidence, not a JavaScript parser. Preserve positions and
+// newlines while masking comments and quoted text (including template literals).
+function syntaxOnly(code) {
+  return code.replace(/\/\/[^\n\r]*|\/\*[\s\S]*?\*\/|"(?:\\[\s\S]|[^"\\])*"|'(?:\\[\s\S]|[^'\\])*'|`(?:\\[\s\S]|[^`\\])*`/g,
+    token => token.replace(/[^\n\r]/g, ' '));
+}
+
+function squareTrace(commands) {
+  const route = [[2, 1, 0], [2, 1, 1], [3, 1, 1], [3, 1, 2], [3, 2, 2], [3, 2, 3], [2, 2, 3], [2, 2, 0]];
+  return commands.length === 9 && route.every(([x, y, facing], index) => {
+    const command = commands[index];
+    return command.type === (index % 2 ? 'turn' : 'move') && !command.blocked && command.x === x && command.y === y && command.facing === facing && (index % 2 === 0 || command.direction === 'right');
+  }) && commands[8].type === 'say' && commands[8].x === 2 && commands[8].y === 2 && commands[8].facing === 0;
+}
+
+// Every public check masks non-code text, including when called by tests.
+lessons.forEach(lesson => {
+  const check = lesson.check;
+  lesson.check = (commands, code = '') => commands.length > 0 && check(commands, syntaxOnly(code));
+});
 
 const $ = id => document.getElementById(id);
 const storageKey = 'bot-academy-progress-v1';
@@ -201,27 +300,36 @@ let worker = null;
 let workerTimer = null;
 let runToken = 0;
 let running = false;
+let playbackTimer = null;
+let resumePlayback = null;
+const reducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function scrollToSection(id) { $(id).scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' }); }
 
 function saveProgress() {
   try { localStorage.setItem(storageKey, JSON.stringify(progress)); } catch { /* Storage is optional. */ }
 }
 function isComplete(index) { return progress[index].ran && progress[index].quiz; }
 function renderPath() {
+  const focused = document.activeElement;
+  const focusContainer = $('lessonCards').contains(focused) ? 'lessonCards' : $('sidebarLessons').contains(focused) ? 'sidebarLessons' : null;
+  const focusedId = focusContainer ? focused.dataset.lessonId : null;
   $('lessonCards').replaceChildren();
   $('sidebarLessons').replaceChildren();
   lessons.forEach((lesson, index) => {
     const completed = isComplete(index);
     const card = document.createElement('button');
     card.className = `lesson-card${index === currentLesson ? ' selected' : ''}`;
+    card.dataset.lessonId = lesson.id;
     card.setAttribute('aria-pressed', String(index === currentLesson));
-    card.innerHTML = `<span class="card-icon">${lesson.icon}</span><span class="card-number">${completed ? '✓' : String(index + 1).padStart(2, '0')}</span><strong>${lesson.short}</strong><div class="card-meta ${completed ? 'card-complete' : ''}">${completed ? 'Mission complete' : `${lesson.minutes} min · ${lesson.challenge ? 'Challenge' : 'Lesson'}`}</div>`;
+    card.innerHTML = `<span class="card-icon">${lesson.icon}</span><span class="card-number">${completed ? '✓' : String(index + 1).padStart(2, '0')}</span><strong>${lesson.short}</strong><div class="card-meta ${completed ? 'card-complete' : ''}">${completed ? 'Mission complete' : `${lesson.minutes} min · ${lesson.category === 'NEXT-LEVEL SKILLS' ? 'Next-level skills' : lesson.challenge ? 'Challenge' : 'Lesson'}`}</div>`;
     card.addEventListener('click', () => selectLesson(index));
     $('lessonCards').append(card);
     const item = document.createElement('button');
     item.className = `sidebar-lesson${index === currentLesson ? ' selected' : ''}${completed ? ' complete' : ''}`;
+    item.dataset.lessonId = lesson.id;
     item.setAttribute('aria-pressed', String(index === currentLesson));
     item.innerHTML = `<span class="step-dot">${completed ? '✓' : index + 1}</span>${lesson.short}`;
-    item.addEventListener('click', () => { selectLesson(index); $('playground').scrollIntoView({ behavior: 'smooth' }); });
+    item.addEventListener('click', () => { selectLesson(index); scrollToSection('playground'); });
     $('sidebarLessons').append(item);
   });
   const count = progress.filter((_, i) => isComplete(i)).length;
@@ -230,12 +338,21 @@ function renderPath() {
   $('missionCount').textContent = `/ ${lessons.length} missions`;
   $('progressFill').style.width = `${count / lessons.length * 100}%`;
   document.querySelector('.status-tag').textContent = count === lessons.length ? 'ROBOT CODER · LEVEL 2' : 'EXPLORER LEVEL 1';
+  if (focusedId) {
+    const replacement = Array.from($(focusContainer).children).find(item => item.dataset.lessonId === focusedId);
+    replacement?.focus({ preventScroll: true });
+  }
 }
 function stopRun() {
   runToken++;
   if (worker) worker.terminate();
   worker = null;
   clearTimeout(workerTimer);
+  workerTimer = null;
+  clearTimeout(playbackTimer);
+  playbackTimer = null;
+  if (resumePlayback) resumePlayback();
+  resumePlayback = null;
   running = false;
   $('runCode').disabled = false;
 }
@@ -244,6 +361,7 @@ function setRobot(x = 2, y = 2, direction = 0) {
   $('gridRobot').style.top = `${y * 20 + 10}%`;
   $('gridRobot').style.transform = 'translate(-50%, -50%)';
   $('gridRobot').querySelector('span').style.transform = `rotate(${direction * 90}deg)`;
+  $('robotPosition').textContent = `Column ${x}, row ${y} · Facing ${['up', 'right', 'down', 'left'][direction]} (coordinates start at 0)`;
 }
 function selectLesson(index) {
   if (initialized) drafts[currentLesson] = $('codeEditor').value;
@@ -254,6 +372,8 @@ function selectLesson(index) {
   $('lessonKicker').textContent = `MISSION ${String(index + 1).padStart(2, '0')} · ${lesson.category}`;
   $('lessonTitle').textContent = lesson.title;
   $('lessonIntro').textContent = lesson.intro;
+  $('lessonPrerequisite').hidden = !lesson.prerequisite;
+  $('lessonPrerequisite').textContent = lesson.prerequisite ? 'Before you begin: ' + lesson.prerequisite : '';
   $('lessonExplanation').innerHTML = `<p class="explanation">${lesson.explanation}</p>`;
   const example = document.createElement('pre');
   example.className = 'example-code';
@@ -298,6 +418,8 @@ function updateLineNumbers() {
   $('lineNumbers').scrollTop = $('codeEditor').scrollTop;
 }
 function updateNext() {
+  $('codeAchieved').textContent = `Code: ${progress[currentLesson].ran ? 'achieved ✓' : 'still to do'}`;
+  $('quizAchieved').textContent = `Quiz: ${progress[currentLesson].quiz ? 'achieved ✓' : 'still to do'}`;
   $('nextLesson').disabled = !isComplete(currentLesson);
   $('nextLesson').firstChild.textContent = currentLesson === lessons.length - 1 ? 'Back to mission map ' : 'Next mission ';
 }
@@ -373,6 +495,17 @@ function runError(message) {
   outputLine('Let’s fix this together: ' + message, true);
   $('runStatus').textContent = 'Try a small change';
 }
+function validWorkerResult(result) {
+  if (!result || typeof result !== 'object' || typeof result.ok !== 'boolean') return false;
+  if (!result.ok) return typeof result.error === 'string' && result.error.length <= 500;
+  return Array.isArray(result.commands) && result.commands.length <= 100 && result.commands.every(command =>
+    command && Number.isInteger(command.x) && command.x >= 0 && command.x <= 4 &&
+    Number.isInteger(command.y) && command.y >= 0 && command.y <= 4 &&
+    Number.isInteger(command.facing) && command.facing >= 0 && command.facing <= 3 &&
+    ((command.type === 'say' && typeof command.text === 'string' && command.text.length <= 500) ||
+     (command.type === 'move' && typeof command.blocked === 'boolean') ||
+     (command.type === 'turn' && ['left', 'right'].includes(command.direction))));
+}
 async function runCode() {
   if (running) return;
   stopRun();
@@ -389,25 +522,40 @@ async function runCode() {
   let url;
   try {
     url = URL.createObjectURL(new Blob([workerSource], { type: 'text/javascript' }));
-    worker = new Worker(url);
+    const runWorker = new Worker(url);
+    worker = runWorker;
+    let settled = false;
     URL.revokeObjectURL(url);
-    worker.onerror = () => { if (token === runToken) runError('The code runner could not start. Try a current browser such as Chrome, Edge, Firefox, or Safari.'); };
-    worker.onmessage = async event => {
-      if (token !== runToken) return;
+    runWorker.onerror = () => { if (token === runToken && !settled) runError('The code runner could not start. Try a current browser such as Chrome, Edge, Firefox, or Safari.'); };
+    runWorker.onmessage = async event => {
+      if (token !== runToken || settled) return;
+      settled = true;
       clearTimeout(workerTimer);
-      worker.terminate();
+      workerTimer = null;
+      runWorker.terminate();
       worker = null;
+      if (!validWorkerResult(event.data)) { runError('The runner sent an unexpected result. Reset your code and try again.'); return; }
       if (!event.data.ok) { runError(event.data.error); return; }
       const commands = event.data.commands;
       $('runStatus').textContent = 'Running your instructions…';
       for (const command of commands) {
         if (token !== runToken) return;
-        setRobot(command.x, command.y, command.facing);
+        if (!reducedMotion()) setRobot(command.x, command.y, command.facing);
         if (command.type === 'say') outputLine(command.text);
         if (command.type === 'move' && command.blocked) outputLine('Edge of the world! Try turning first.');
-        await new Promise(resolve => setTimeout(resolve, command.type === 'say' ? 70 : 180));
+        if (!reducedMotion()) await new Promise(resolve => {
+          resumePlayback = resolve;
+          playbackTimer = setTimeout(() => {
+            if (token !== runToken) return;
+            playbackTimer = null; resumePlayback = null; resolve();
+          }, command.type === 'say' ? 70 : 180);
+        });
       }
       if (token !== runToken) return;
+      if (commands.length) {
+        const last = commands.at(-1);
+        setRobot(last.x, last.y, last.facing);
+      }
       if (commands.length === 0) outputLine('No robot commands yet. Try say("Hello!");');
       else if (!$('output').children.length) outputLine('Movement complete. Nice work!');
       const passed = lessons[lessonIndex].check(commands, code);
@@ -423,7 +571,7 @@ async function runCode() {
         }
       } else {
         $('runStatus').textContent = 'Code finished';
-        outputLine('Keep experimenting! Follow the mission on the left to earn your badge.');
+        outputLine(progress[lessonIndex].ran ? 'This attempt did not meet the mission goal. Your earlier code achievement is saved.' : 'Keep experimenting! Follow the mission on the left to earn your badge.');
       }
       running = false;
       $('runCode').disabled = false;
@@ -431,9 +579,9 @@ async function runCode() {
       updateNext();
     };
     workerTimer = setTimeout(() => {
-      if (token === runToken) runError('This code took too long. Check for a loop that never stops, then try again.');
+      if (token === runToken && !settled) runError('This code took too long. Check for a loop that never stops, then try again.');
     }, 1500);
-    worker.postMessage(code);
+    runWorker.postMessage(code);
   } catch {
     if (url) URL.revokeObjectURL(url);
     runError('Your browser could not start the code runner. Try opening this page in a current browser.');
@@ -471,13 +619,13 @@ $('hintButton').addEventListener('click', () => {
 });
 $('nextLesson').addEventListener('click', () => {
   if (!isComplete(currentLesson)) return;
-  if (currentLesson < lessons.length - 1) { selectLesson(currentLesson + 1); $('playground').scrollIntoView({ behavior: 'smooth' }); }
-  else $('lessons').scrollIntoView({ behavior: 'smooth' });
+  if (currentLesson < lessons.length - 1) { selectLesson(currentLesson + 1); scrollToSection('playground'); }
+  else scrollToSection('lessons');
 });
 $('startButton').addEventListener('click', () => {
   const next = progress.findIndex((_, index) => !isComplete(index));
   selectLesson(next < 0 ? 0 : next);
-  $('playground').scrollIntoView({ behavior: 'smooth' });
+  scrollToSection('playground');
   $('codeEditor').focus({ preventScroll: true });
 });
 $('resetProgress').addEventListener('click', () => {
