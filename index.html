@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#192737">
+  <title>Bot Academy — Small steps. Big ideas.</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <svg class="svg-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="icon-bot" viewBox="0 0 24 24"><path d="M12 3v3m-2-3h4M5 9a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v9H5zm-3 3v4m20-4v4M9 12v2m6-2v2m-6 3h6"/></symbol>
+    <symbol id="icon-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></symbol>
+    <symbol id="icon-book" viewBox="0 0 24 24"><path d="M12 5v16m0-16C9 2 4 3 2 4v15c4-2 7-1 10 2m0-16c3-3 8-2 10-1v15c-4-2-7-1-10 2"/></symbol>
+    <symbol id="icon-spark" viewBox="0 0 24 24"><path d="m12 2 3 7 7 3-7 3-3 7-3-7-7-3 7-3Z"/></symbol>
+    <symbol id="icon-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="icon-reset" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 1 9M3 4v6h6"/></symbol>
+  </svg>
+  <aside class="sidebar">
+    <a class="brand" href="#" aria-label="Bot Academy home"><span class="brand-icon"><svg><use href="#icon-bot"/></svg></span><span>bot<span class="brand-light">academy</span><small>BIG IDEAS START HERE</small></span></a>
+    <div class="sidebar-label">YOUR WORKSPACE</div>
+    <nav aria-label="Main navigation">
+      <a class="nav-item active" href="#lessons"><svg><use href="#icon-book"/></svg>Learning path<span class="nav-count">18</span></a>
+      <a class="nav-item" href="#playground"><svg><use href="#icon-code"/></svg>Code playground</a>
+      <a class="nav-item" href="#quiz"><svg><use href="#icon-spark"/></svg>Knowledge check</a>
+    </nav>
+    <div class="sidebar-label lesson-label">YOUR LEARNING PATH</div>
+    <div id="sidebarLessons" class="sidebar-lessons"></div>
+    <div class="side-tip"><span class="tip-icon">✦</span><strong>Every expert was a beginner.</strong><p>Try things. Make mistakes.<br>That’s how great coders grow!</p></div>
+    <div class="sidebar-footer"><span class="online-dot"></span> Built for curious minds</div>
+  </aside>
+  <div class="page">
+    <header class="topbar"><div class="breadcrumb">Your workspace <span>/</span> <strong>Learning path</strong></div><div class="profile"><span class="status-tag">EXPLORER LEVEL 1</span><span class="avatar" aria-label="Robot explorer"><svg><use href="#icon-bot"/></svg></span></div></header>
+    <main>
+      <div class="page-heading"><div><div class="eyebrow">LET’S BUILD SOMETHING AWESOME</div><h1>Hello, future coder <span class="wave">✦</span></h1><p>Meet your robot. Learn to code. Bring your ideas to life.</p></div><span class="age-tag">MADE FOR AGES 10–11</span></div>
+      <section class="hero" aria-labelledby="heroTitle">
+        <div class="hero-copy"><span class="hero-tag"><span></span> YOUR ADVENTURE STARTS HERE</span><h2 id="heroTitle">Small steps.<br><span>Big robot energy.</span></h2><p>You don’t need to be a genius to code. Just a little curiosity.<br class="desktop-break"> Join Byte and learn one fun mission at a time.</p><button class="button dark" id="startButton">Let’s start coding <svg><use href="#icon-arrow"/></svg></button><div class="hero-meta"><span>◷ &nbsp;5–10 min per lesson</span><span>✧ &nbsp;No experience needed</span></div></div>
+        <div class="hero-art" aria-hidden="true"><span class="orbit orbit-one"></span><span class="orbit orbit-two"></span><span class="art-star star-one">✦</span><span class="art-star star-two">✧</span><div class="floating-code code-one">say("Hello!");</div><div class="floating-code code-two">&lt;big ideas /&gt;</div><div class="big-robot"><div class="antenna"></div><div class="robot-ear left"></div><div class="robot-ear right"></div><div class="robot-head"><div class="robot-face"><i></i><i></i><span></span></div><div class="cheek cheek-left"></div><div class="cheek cheek-right"></div></div><div class="robot-neck"></div><div class="robot-body"><svg><use href="#icon-code"/></svg><span></span></div><div class="robot-arm arm-left"></div><div class="robot-arm arm-right"></div><div class="robot-foot foot-left"></div><div class="robot-foot foot-right"></div></div><div class="robot-shadow"></div><div class="byte-label">MEET BYTE <span>↗</span></div></div>
+      </section>
+      <section class="path-section" id="lessons" aria-labelledby="pathTitle"><div class="section-heading"><div><h2 id="pathTitle">Your mission map <span class="muted" id="missionCount">/ 18 missions</span></h2><p>A little learning. A little doing. A whole lot of “I made that!”</p></div><div class="progress-summary"><span id="progressText">0 of 18 completed</span><div class="progress-track"><div id="progressFill"></div></div></div></div><div id="lessonCards" class="lesson-cards"></div></section>
+      <section class="learning-workspace" id="playground" aria-label="Interactive lesson and code playground">
+        <article class="lesson-panel"><div class="panel-kicker" id="lessonKicker">MISSION 01 · THE BASICS</div><h2 id="lessonTitle"></h2><p id="lessonIntro" class="lesson-intro"></p><p id="lessonPrerequisite" class="prerequisite" hidden></p><div class="learning-goals"><h3>LEARNING GOALS</h3><ul id="lessonGoals"></ul></div><div id="lessonExplanation"></div><div class="mission-box"><span>YOUR MISSION</span><p id="missionText"></p></div><div class="lesson-bottom"><span><svg><use href="#icon-spark"/></svg> Learning by doing</span><button class="text-button" id="hintButton" aria-expanded="false">Need a hint?</button></div><p id="hintText" class="hint" hidden></p></article>
+        <div class="playground-panel"><div class="playground-heading"><div><span class="live-dot"></span><strong>Byte’s playground</strong></div><span class="playground-caption">YOUR CODE → ROBOT MAGIC</span></div><div class="editor-tabs"><span><svg><use href="#icon-code"/></svg> mission.js</span><span>JavaScript</span></div><p class="editor-help" id="editorHelp">Tab: indent; Escape: leave editor; Ctrl/Cmd + Enter: run</p><div class="editor"><div id="lineNumbers" class="line-numbers" aria-hidden="true">1<br>2<br>3</div><textarea id="codeEditor" aria-label="JavaScript code editor" aria-describedby="editorHelp" spellcheck="false" autocapitalize="off" autocomplete="off" wrap="off"></textarea></div><div class="editor-actions"><button class="text-button reset-button" id="resetCode"><svg><use href="#icon-reset"/></svg>Reset code</button><button class="button run-button" id="runCode"><span>▶</span> Run code</button></div><div class="output-area"><div class="robot-map"><div class="world" id="robotWorld" aria-label="Robot movement grid" aria-describedby="robotPosition"><div class="grid-robot" id="gridRobot"><svg><use href="#icon-bot"/></svg><span>▲</span></div><span class="world-label">BYTE’S WORLD</span></div><p id="robotPosition" class="robot-position"></p></div><div class="console"><div class="console-heading">OUTPUT <span id="runStatus">Ready when you are</span></div><div id="output" role="log" aria-live="polite"><p class="output-placeholder">Your robot is waiting…<br>Press Run code to say hello!</p></div></div></div><div class="playground-note"><svg><use href="#icon-spark"/></svg> It’s safe to experiment. You can always start again.</div></div>
+      </section>
+      <section class="quiz-section" id="quiz" aria-labelledby="quizHeading"><div class="quiz-icon"><svg><use href="#icon-spark"/></svg></div><div class="quiz-content"><div class="panel-kicker">QUICK KNOWLEDGE CHECK</div><h2 id="quizHeading"></h2><div id="quizAnswers" class="quiz-answers"></div><p id="quizFeedback" aria-live="polite"></p></div><div class="quiz-side"><div class="achievement-status" aria-label="Mission achievements"><p id="codeAchieved">Code: still to do</p><p id="quizAchieved">Quiz: still to do</p></div><span>TRY IT, THEN TEST IT</span><p>Run your code and answer<br>the question to earn a badge.</p><button class="button dark" id="nextLesson" disabled>Next mission <svg><use href="#icon-arrow"/></svg></button></div></section>
+      <footer><span><svg><use href="#icon-bot"/></svg> A little curiosity goes a long way.</span><button id="resetProgress" class="text-button">Reset my progress</button><span>Made for learning. Built for fun.</span></footer>
+    </main>
+  </div>
+</body>
+</html>
